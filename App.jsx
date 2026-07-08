@@ -132,6 +132,7 @@ function HazardStripe({ className = '' }) {
     return (
       <header className="sticky top-0 z-50 border-b-2 border-zinc-800 bg-zinc-900/90 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
+          
           {/* Логотип */}
           <div className="flex items-center gap-2">
             <span className="flex h-9 w-9 items-center justify-center border-2 border-zinc-700 text-orange-500 font-bold">
@@ -142,23 +143,24 @@ function HazardStripe({ className = '' }) {
             </span>
           </div>
   
-          <div className="flex items-center gap-6">
-            <div className="hidden md:flex gap-4">
-              <a href="#services" className="text-white hover:text-orange-500 transition-colors"> </a>
-              <a href="#contacts" className="text-white hover:text-orange-500 transition-colors"> </a>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href="tel:+77772824263" className="flex items-center gap-1 text-white hover:text-orange-500 transition-colors">
-                <IconPhone className="h-4 w-4" />
-                <span className="hidden sm:inline">+7 777 282-42-63</span>
-              </a>
-              <a href="tel:+77471644880" className="flex items-center gap-1 text-white hover:text-orange-500 transition-colors">
-                <IconPhone className="h-4 w-4" />
-                <span className="hidden sm:inline">+7 747 164-48-80</span>
-              </a>
-            </div>
+          {/* Навигация (скрыта на мобилках для экономии места) */}
+          <div className="hidden md:flex gap-4">
+            <a href="#services" className="text-white hover:text-orange-500 transition-colors">Услуги</a>
+            <a href="#contacts" className="text-white hover:text-orange-500 transition-colors">Контакты</a>
           </div>
+  
+          {/* Номера телефонов - ИСПРАВЛЕНО ДЛЯ МОБИЛОК */}
+          <div className="flex flex-col gap-1 sm:gap-2 items-end sm:items-center">
+            <a href="tel:+77772824263" className="flex items-center gap-2 text-white hover:text-orange-500 transition-colors">
+              <IconPhone className="h-4 w-4" />
+              <span className="text-xs sm:text-sm font-medium">+7 777 282-42-63</span>
+            </a>
+            <a href="tel:+77471644880" className="flex items-center gap-2 text-white hover:text-orange-500 transition-colors">
+              <IconPhone className="h-4 w-4" />
+              <span className="text-xs sm:text-sm font-medium">+7 747 164-48-80</span>
+            </a>
+          </div>
+  
         </div>
       </header>
     );

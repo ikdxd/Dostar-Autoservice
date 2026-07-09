@@ -61,6 +61,45 @@ function IconEngine({ className }) {
   );
 }
 
+function IconTransmission({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className={className}>
+      <circle cx="7" cy="7" r="3" />
+      <circle cx="17" cy="17" r="3" />
+      <path d="M10 7h4M7 10v4M17 14v-4h-4" />
+    </svg>
+  );
+}
+
+function IconAirConditioner({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className={className}>
+      <path d="M12 2v20M2 12h20M5.5 5.5l13 13M18.5 5.5l-13 13" />
+    </svg>
+  );
+}
+
+function IconTimingBelt({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className={className}>
+      <circle cx="8" cy="8" r="3" />
+      <circle cx="16" cy="16" r="3" />
+      <path d="M11 8h2M8 11v2M16 13v-2h-2" />
+    </svg>
+  );
+}
+
+function IconTimingChain({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className={className}>
+      <rect x="3" y="10" width="5" height="4" />
+      <rect x="10" y="10" width="5" height="4" />
+      <rect x="17" y="10" width="4" height="4" />
+      <path d="M8 12h2M15 12h2" />
+    </svg>
+  );
+}
+
 function IconPhone({ className }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" className={className}>
@@ -102,6 +141,34 @@ const SERVICES = [
     description:
       'Капитальный и локальный ремонт ДВС любой сложности. Полная дефектовка перед началом работ.',
     Icon: IconEngine,
+  },
+  {
+    code: 'TRM-05',
+    title: 'Ремонт АКПП',
+    description:
+      'Ремонт и обслуживание автоматических коробок, роботов и вариаторов. Диагностика гидроблока и замена изношенных узлов.',
+    Icon: IconTransmission,
+  },
+  {
+    code: 'AC-06',
+    title: 'Заправка автокондиционера',
+    description:
+      'Вакуумирование системы, проверка на герметичность, дозаправка качественным фреоном и добавление компрессорного масла.',
+    Icon: IconAirConditioner,
+  },
+  {
+    code: 'ENG-07',
+    title: 'Замена ремня ГРМ',
+    description:
+      'Плановая замена приводного ремня, роликов и натяжителей. Предотвращаем обрыв ремня и повреждение клапанов двигателя.',
+    Icon: IconTimingBelt,
+  },
+  {
+    code: 'ENG-08',
+    title: 'Замена цепи ГРМ',
+    description:
+      'Комплексная замена изношенной цепи ГРМ, успокоителей, натяжителей и шестерен по регламенту автопроизводителя.',
+    Icon: IconTimingChain,
   },
 ];
 
@@ -287,72 +354,112 @@ function Hero() {
 }
 
 /* ==========================================================================
-   БЛОК УСЛУГ: сетка карточек с анимацией появления при скролле
-   (whileInView + viewport once:true — анимация срабатывает один раз,
-   не пересчитывается при каждом повторном скролле)
+   БЛОК УСЛУГ: glassmorphism-карточки с волновой анимацией при скролле
+   и микро-интерактивом (hover/tap). Контент SERVICES не изменяется.
    ========================================================================== */
 
+const servicesContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.09, delayChildren: 0.05 },
+  },
+};
+
+const serviceCardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 function ServiceCard({ code, title, description, Icon }) {
-  const cardVariants = {
-    hidden: { opacity: 0, y: 24 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
-  };
+  const shouldReduceMotion = useReducedMotion();
+
+  const hoverLift = shouldReduceMotion
+    ? undefined
+    : { y: -6, transition: { type: 'spring', stiffness: 380, damping: 22 } };
+
+  const tapLift = shouldReduceMotion
+    ? undefined
+    : { y: -3, scale: 0.995, transition: { type: 'spring', stiffness: 500, damping: 28 } };
 
   return (
-    <motion.div
-      variants={cardVariants}
-      className="group flex flex-col border-2 border-zinc-800 bg-zinc-900 p-6 transition-colors hover:border-orange-500"
+    <motion.article
+      variants={serviceCardVariants}
+      whileHover={hoverLift}
+      whileTap={tapLift}
+      className="group relative flex w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-white/5 bg-zinc-900/45 p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md transition-[border-color,box-shadow] duration-300 hover:border-orange-500/40 hover:shadow-[0_16px_48px_-12px_rgba(249,115,22,0.28)] sm:p-5 lg:p-6"
     >
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex h-12 w-12 items-center justify-center border-2 border-zinc-700 text-zinc-300 transition-colors group-hover:border-orange-500 group-hover:text-orange-500">
-          <Icon className="h-6 w-6" />
+      {/* Мягкий акцентный блик при hover */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-orange-500/0 via-orange-500/0 to-orange-500/0 opacity-0 transition-opacity duration-300 group-hover:from-orange-500/[0.06] group-hover:via-transparent group-hover:to-transparent group-hover:opacity-100"
+        aria-hidden="true"
+      />
+
+      <div className="relative mb-3 flex items-center justify-between gap-2 sm:mb-4">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-300 transition-colors duration-300 group-hover:border-orange-500/50 group-hover:text-orange-400 sm:h-11 sm:w-11">
+          <Icon className="h-[1.125rem] w-[1.125rem] sm:h-5 sm:w-5" />
         </div>
-        <span className="font-mono text-xs font-bold text-zinc-600">{`CODE: ${code}`}</span>
+        <span className="shrink-0 font-mono text-[0.625rem] font-semibold tracking-wider text-zinc-500 sm:text-[0.6875rem]">
+          {`CODE: ${code}`}
+        </span>
       </div>
 
-      <h3 className="mb-2 text-xl font-black uppercase tracking-tight text-zinc-50">
+      <h3 className="relative mb-2 break-words text-[clamp(0.8125rem,2.8vw+0.35rem,1.25rem)] font-black uppercase leading-snug tracking-tight text-zinc-50">
         {title}
       </h3>
-      <p className="mb-6 flex-1 text-sm leading-relaxed text-zinc-300">
+      <p className="relative mb-4 flex-1 break-words text-[clamp(0.6875rem,1.6vw+0.3rem,0.875rem)] leading-relaxed text-zinc-400 sm:mb-5">
         {description}
       </p>
 
-      <a
+      <motion.a
         href={WHATSAPP_LINK}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center justify-center border-2 border-zinc-700 bg-zinc-950 px-5 py-3 font-mono text-sm font-bold uppercase tracking-wide text-zinc-100 transition-all hover:border-orange-500 hover:bg-orange-500 hover:text-zinc-950 active:translate-x-px active:translate-y-px"
+        whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
+        className="relative inline-flex w-full items-center justify-center rounded-xl border border-white/10 bg-zinc-950/60 px-3 py-2.5 text-center font-mono text-[clamp(0.625rem,1.2vw+0.25rem,0.8125rem)] font-bold uppercase tracking-wide text-zinc-100 backdrop-blur-sm transition-colors duration-300 hover:border-orange-500/50 hover:bg-orange-500 hover:text-zinc-950 sm:px-4 sm:py-3"
       >
         Узнать стоимость
-      </a>
-    </motion.div>
+      </motion.a>
+    </motion.article>
   );
 }
 
 function Services() {
-  const gridVariants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.1 } },
-  };
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="bg-zinc-950 px-5 py-20">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-12 flex items-end justify-between border-b-2 border-zinc-800 pb-6">
-          <h2 className="text-3xl font-black uppercase tracking-tight text-zinc-50 sm:text-4xl">
+    <section id="services" className="relative overflow-x-hidden bg-zinc-950 px-4 py-12 sm:px-5 sm:py-20">
+      {/* Фоновый градиент — подчёркивает эффект матового стекла карточек */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(249,115,22,0.06),transparent_60%)]"
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto w-full max-w-6xl">
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="mb-8 flex items-end justify-between border-b border-white/5 pb-4 sm:mb-12 sm:pb-6"
+        >
+          <h2 className="text-[clamp(1.375rem,4vw+0.5rem,2.25rem)] font-black uppercase tracking-tight text-zinc-50">
             Услуги
           </h2>
           <span className="hidden font-mono text-xs font-bold uppercase tracking-widest text-zinc-600 sm:block">
-            {'// 4 направления работ'}
+            {'// 8 направлений работ'}
           </span>
-        </div>
+        </motion.div>
 
         <motion.div
-          variants={gridVariants}
+          variants={servicesContainerVariants}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          className="grid w-full grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-4"
         >
           {SERVICES.map((service) => (
             <ServiceCard key={service.code} {...service} />
@@ -427,7 +534,7 @@ function Footer() {
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-zinc-950 font-sans antialiased">
+    <div className="min-h-screen overflow-x-hidden bg-zinc-950 font-sans antialiased">
       <Header />
       <HazardStripe />
       <main>
@@ -438,6 +545,8 @@ export default function App() {
     </div>
   );
 }
+
+
 
 
 

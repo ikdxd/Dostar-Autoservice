@@ -390,7 +390,7 @@ function ServiceCard({ code, title, description, Icon }) {
       variants={serviceCardVariants}
       whileHover={hoverLift}
       whileTap={tapLift}
-      className="group relative flex w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-white/5 bg-zinc-900/45 p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md transition-[border-color,box-shadow] duration-300 hover:border-orange-500/40 hover:shadow-[0_16px_48px_-12px_rgba(249,115,22,0.28)] sm:p-5 lg:p-6"
+      className="group relative box-border flex w-full min-w-0 max-w-sm flex-col overflow-hidden rounded-2xl border border-white/5 bg-zinc-900/45 p-4 shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md transition-[border-color,box-shadow] duration-300 hover:border-orange-500/40 hover:shadow-[0_16px_48px_-12px_rgba(249,115,22,0.28)] md:mx-0 md:max-w-none md:p-6"
     >
       {/* Мягкий акцентный блик при hover */}
       <div
@@ -398,19 +398,19 @@ function ServiceCard({ code, title, description, Icon }) {
         aria-hidden="true"
       />
 
-      <div className="relative mb-3 flex items-center justify-between gap-2 sm:mb-4">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-300 transition-colors duration-300 group-hover:border-orange-500/50 group-hover:text-orange-400 sm:h-11 sm:w-11">
-          <Icon className="h-[1.125rem] w-[1.125rem] sm:h-5 sm:w-5" />
+      <div className="relative mb-3 flex items-center justify-between gap-2 md:mb-4">
+        <div className="box-border flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-300 transition-colors duration-300 group-hover:border-orange-500/50 group-hover:text-orange-400 md:h-10 md:w-10">
+          <Icon className="h-4 w-4 md:h-5 md:w-5" />
         </div>
-        <span className="shrink-0 font-mono text-[0.625rem] font-semibold tracking-wider text-zinc-500 sm:text-[0.6875rem]">
+        <span className="shrink-0 font-mono text-[10px] font-semibold tracking-wider text-zinc-500 md:text-xs">
           {`CODE: ${code}`}
         </span>
       </div>
 
-      <h3 className="relative mb-2 break-words text-[clamp(0.8125rem,2.8vw+0.35rem,1.25rem)] font-black uppercase leading-snug tracking-tight text-zinc-50">
+      <h3 className="relative mb-2 break-words text-lg font-black uppercase leading-snug tracking-tight text-zinc-50 md:text-2xl">
         {title}
       </h3>
-      <p className="relative mb-4 flex-1 break-words text-[clamp(0.6875rem,1.6vw+0.3rem,0.875rem)] leading-relaxed text-zinc-400 sm:mb-5">
+      <p className="relative mb-4 flex-1 break-words text-sm leading-relaxed text-zinc-400 md:mb-5 md:text-base">
         {description}
       </p>
 
@@ -419,7 +419,7 @@ function ServiceCard({ code, title, description, Icon }) {
         target="_blank"
         rel="noopener noreferrer"
         whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
-        className="relative inline-flex w-full items-center justify-center rounded-xl border border-white/10 bg-zinc-950/60 px-3 py-2.5 text-center font-mono text-[clamp(0.625rem,1.2vw+0.25rem,0.8125rem)] font-bold uppercase tracking-wide text-zinc-100 backdrop-blur-sm transition-colors duration-300 hover:border-orange-500/50 hover:bg-orange-500 hover:text-zinc-950 sm:px-4 sm:py-3"
+        className="relative box-border inline-flex w-full items-center justify-center rounded-xl border border-white/10 bg-zinc-950/60 px-3 py-2 text-center font-mono text-xs font-bold uppercase tracking-wide text-zinc-100 backdrop-blur-sm transition-colors duration-300 hover:border-orange-500/50 hover:bg-orange-500 hover:text-zinc-950 md:px-4 md:py-3 md:text-sm"
       >
         Узнать стоимость
       </motion.a>
@@ -431,25 +431,25 @@ function Services() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section id="services" className="relative overflow-x-hidden bg-zinc-950 px-4 py-12 sm:px-5 sm:py-20">
+    <section id="services" className="relative box-border overflow-x-hidden bg-zinc-950 px-4 py-10 md:px-6 md:py-20">
       {/* Фоновый градиент — подчёркивает эффект матового стекла карточек */}
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(249,115,22,0.06),transparent_60%)]"
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto w-full max-w-6xl">
+      <div className="relative mx-auto box-border w-full max-w-6xl">
         <motion.div
           initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
           whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="mb-8 flex items-end justify-between border-b border-white/5 pb-4 sm:mb-12 sm:pb-6"
+          className="mb-6 box-border flex items-end justify-between border-b border-white/5 pb-4 md:mb-12 md:pb-6"
         >
-          <h2 className="text-[clamp(1.375rem,4vw+0.5rem,2.25rem)] font-black uppercase tracking-tight text-zinc-50">
+          <h2 className="text-xl font-black uppercase tracking-tight text-zinc-50 md:text-3xl">
             Услуги
           </h2>
-          <span className="hidden font-mono text-xs font-bold uppercase tracking-widest text-zinc-600 sm:block">
+          <span className="hidden font-mono text-xs font-bold uppercase tracking-widest text-zinc-600 md:block">
             {'// 8 направлений работ'}
           </span>
         </motion.div>
@@ -459,10 +459,12 @@ function Services() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="grid w-full grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-4"
+          className="flex w-full flex-col items-stretch gap-4 md:grid md:grid-cols-2 md:items-start md:gap-5 lg:grid-cols-4"
         >
           {SERVICES.map((service) => (
-            <ServiceCard key={service.code} {...service} />
+            <div key={service.code} className="box-border flex w-full min-w-0 max-w-full justify-center md:block">
+              <ServiceCard {...service} />
+            </div>
           ))}
         </motion.div>
       </div>
@@ -534,7 +536,7 @@ function Footer() {
 
 export default function App() {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-zinc-950 font-sans antialiased">
+    <div className="box-border min-h-screen overflow-x-hidden bg-zinc-950 font-sans antialiased">
       <Header />
       <HazardStripe />
       <main>
@@ -545,6 +547,8 @@ export default function App() {
     </div>
   );
 }
+
+
 
 
 

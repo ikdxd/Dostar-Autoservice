@@ -288,7 +288,7 @@ function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="text-4xl font-black uppercase leading-[1.05] tracking-tight text-zinc-50 sm:text-6xl"
+          className="text-3xl md:text-5xl font-black uppercase leading-[1.05] tracking-tight text-zinc-50 sm:text-6xl"
         >
           Профессиональный ремонт и диагностика авто в Алматы
         </motion.h1>
@@ -547,6 +547,8 @@ export default function App() {
     </div>
   );
 }
+
+
 
 
 
